@@ -1,10 +1,12 @@
 Robotics-Programming
 ====================
 
-A repository for beginner robotics programming.
+###About this repository
 
-Languages:
+This is a repository for beginner robotics programming.
 
---RobotC
+All projects are written in RobotC.
 
-Projects:
+Code is written for VEX Robotics Systems.
+
+###Projects:
