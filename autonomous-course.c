@@ -71,10 +71,10 @@ void straightLine(int distance) {
 //+++++++++++++++++++++++++++++++++++++++++++++| Right Angle Turn |++++++++++++++++++++++++++++++++++++++++
 
 void rightAngleTurn() {
-	while(x > -475 && y < 475) {
+	while(x > -555 && y < 555) {
 		
-		motor[leftMotor] = 50;
-		motor[rightMotor] = -50;
+		motor[leftMotor] = 90;
+		motor[rightMotor] = -90;
 		
 		x = SensorValue[rightEncoder];
 		y = SensorValue[leftEncoder];
@@ -92,7 +92,7 @@ void rightAngleTurn() {
 
 task main ()
 {
-	straightLine(4300);
+	straightLine(4375);
 	
 	pause(1);
 
@@ -102,7 +102,7 @@ task main ()
 	
 	//Open the claw
 	
-	while(z < 2000) {
+	while(z < 3500) {
 		
 		z = SensorValue[clawAngle];
 		
@@ -110,11 +110,15 @@ task main ()
 	
 	}
 	
-	straightLine(2000);
+	pause(1);
+	
+	straightLine(1750);
+	
+	pause(1);
 	
 	//Close the claw
 	
-	while(z > 950) {
+	while(z > 1055) {
 		
 		z = SensorValue[clawAngle];
 		
@@ -128,7 +132,7 @@ task main ()
 	
 	pause(1);
 	
-	straightLine(2000);
+	straightLine(1890);
 	
 	pause(1);
 	
@@ -142,13 +146,25 @@ task main ()
 	
 	//Reopen the claw
 	
-	while(z < 2000) {
+	//z = 0;
+	//SensorValue[clawAngle] = 0;
+	
+	while(z < 3500) {
 		
 		z = SensorValue[clawAngle];
 		
-		motor[claw] = -63;
-		
+		motor[claw] = -127;
+	
 	}
+	
+	pause(1);
+	
+	motor[leftMotor] = -127;
+	motor[rightMotor] = -127;
+	wait1Msec(500);
+	
+	motor[leftMotor] = 0;
+	motor[rightMotor] = 0;
 
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
