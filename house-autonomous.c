@@ -121,6 +121,33 @@ void rightAngleTurnLeft() {
 
 }
 
+//+++++++++++++++++++++++++++++++++++++++++++++| Follow Line |+++++++++++++++++++++++++++++++++
+
+void followLine() {
+
+	while(sensorMiddle > 600) {
+
+		sensorLeft = SensorValue[sensorLeft];
+		sensorRight = SensorValue[sensorRight];
+		sensorMiddle = SensorValue[sensorMiddle];
+
+		motor[leftMotor] = 100;
+		motor[rightMotor] = 100;
+
+		if(sensorRight > 600){
+			motor[leftMotor] = 127;
+			motor[rightMotor] = 50;
+		}
+
+		if(sensorLeft > 600){
+			motor[leftMotor] = 50;
+			motor[rightMotor] = 127;
+		}
+		
+	}
+
+}
+
 */
 
 //+++++++++++++++++++++++++++++++++++++++++++++| Route 1 |+++++++++++++++++++++++++++++++++++++++++++++
