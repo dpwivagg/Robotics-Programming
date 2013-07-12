@@ -102,3 +102,28 @@ void pause(int seconds) {
 	motor[rightMotor] = 0;
 	wait1Msec(seconds * 1000);
 }
+
+void followLine() {
+
+	while(sensorMiddle > 600) {
+
+		sensorLeft = SensorValue[sensorLeft];
+		sensorRight = SensorValue[sensorRight];
+		sensorMiddle = SensorValue[sensorMiddle];
+
+		motor[leftMotor] = 100;
+		motor[rightMotor] = 100;
+
+		if(sensorRight > 600){
+			motor[leftMotor] = 127;
+			motor[rightMotor] = 50;
+		}
+
+		if(sensorLeft > 600){
+			motor[leftMotor] = 50;
+			motor[rightMotor] = 127;
+		}
+		
+	}
+
+}
