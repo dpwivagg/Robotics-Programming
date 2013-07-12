@@ -12,6 +12,12 @@ int y;
 
 int z;
 
+int sensorLeft;
+
+int sensorRight;
+
+int sensorMiddle;
+
 void rightAngleTurnRight();
 
 void rightAngleTurnLeft();
@@ -21,3 +27,5 @@ void straightLine(int distance);
 void straightLine();
 
 void pause(int seconds);
+
+void followLine();
