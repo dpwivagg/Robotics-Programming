@@ -1,0 +1,73 @@
+#pragma config(Sensor, in1,    sensorLeft,     sensorLineFollower)
+#pragma config(Sensor, in2,    sensorMiddle,   sensorLineFollower)
+#pragma config(Sensor, in3,    sensorRight,    sensorLineFollower)
+#pragma config(Sensor, in4,    clawAngle,      sensorPotentiometer)
+#pragma config(Sensor, in5,    armAngle,       sensorPotentiometer)
+#pragma config(Sensor, dgtl1,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  leftEncoder,    sensorQuadEncoder)
+#pragma config(Sensor, dgtl5,  sonarInput,     sensorSONAR_inch)
+#pragma config(Motor,  port1,           rightMotor,    tmotorVex393, openLoop)
+#pragma config(Motor,  port5,           arm,           tmotorVex393, openLoop)
+#pragma config(Motor,  port6,           claw,          tmotorVex393, openLoop)
+#pragma config(Motor,  port10,          leftMotor,     tmotorVex393, openLoop, reversed)
+
+int x = 0;
+int y = 0;
+int z = 0;
+int sensorLeftInt = 0;
+int sensorRightInt = 0;
+int sensorMiddleInt = 0;
+
+task main()
+{
+
+  while(z == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 100;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 110;
+			motor[rightMotor] = 70;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 70;
+			motor[rightMotor] = 110;
+		}
+
+		if(sensorRightInt > 2000 && sensorMiddleInt > 2000){
+			motor[leftMotor] = motor[rightMotor] = 0;
+			z++;
+		}
+	}
+
+	wait1Msec(500);
+
+	sensorLeftInt = 0;
+	sensorRightInt = 0;
+	sensorMiddleInt = 0;
+
+	SensorValue[rightEncoder] = 0;
+	SensorValue[leftEncoder] = 0;
+	x = 0;
+	y = 0;
+
+	while(x > -200 && y < 200 && z == 1){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+		x = SensorValue[rightEncoder];
+		y = SensorValue[leftEncoder];
+
+		motor[leftMotor] = 100;
+		motor[rightMotor] = -100;
+
+		if(sensorRightInt > 2000) z++;
+	}
+}
