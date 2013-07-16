@@ -1,157 +1,170 @@
-#pragma config(Sensor, in6,    clawAngle,      sensorPotentiometer)
+#pragma config(Sensor, in1,    sensorLeft,     sensorLineFollower)
+#pragma config(Sensor, in2,    sensorMiddle,   sensorLineFollower)
+#pragma config(Sensor, in3,    sensorRight,    sensorLineFollower)
+#pragma config(Sensor, in4,    clawAngle,      sensorPotentiometer)
+#pragma config(Sensor, in5,    armAngle,       sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  rightEncoder,   sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  leftEncoder,    sensorQuadEncoder)
-#pragma config(Sensor, dgtl8,  sonarInput,     sensorSONAR_inch)
-#pragma config(Motor,  port1,           rightMotor,    tmotorVex393, openLoop, reversed)
-#pragma config(Motor,  port3,           claw,          tmotorVex393, openLoop)
-#pragma config(Motor,  port10,          leftMotor,     tmotorVex393, openLoop)
+#pragma config(Sensor, dgtl5,  sonarInput,     sensorSONAR_inch)
+#pragma config(Motor,  port1,           rightMotor,    tmotorVex393, openLoop)
+#pragma config(Motor,  port5,           arm,           tmotorVex393, openLoop)
+#pragma config(Motor,  port6,           claw,          tmotorVex393, openLoop)
+#pragma config(Motor,  port10,          leftMotor,     tmotorVex393, openLoop, reversed)
 
-#include "movement.h"
+int armAngleInt = 0;
+int clawAngleInt = 0;
+int encoderRightInt = 0;
+int encoderLeftInt = 0;
+int placeholder = 0;
+int sensorLeftInt = 0;
+int sensorRightInt = 0;
+int sensorMiddleInt = 0;
 
-/*
+//++++++++++++++++++++++ Travel in a straight line until intersection left ++++++++++++++++++++
 
-//+++++++++++++++++++++++++++++++++++++++++++++| Public Integers |++++++++++++++++++++++++++++++++++++++++
+void lineUIL() {
+	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
 
-int x = 0;
-int y = 0;
-int z = 0;
-int sensorLeft;
-int sensorRight;
-int sensorMiddle;
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Stop |++++++++++++++++++++++++++++++++++++++++++++++
-
-void pause(int seconds) {
-	motor[leftMotor] = 0;
-	motor[rightMotor] = 0;
-	wait1Msec(seconds * 1000);
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Straight Line |++++++++++++++++++++++++++++++++++++++++
-
-void straightLine(int distance) {
-	while(x < distance || y < distance) {
-
-		x = SensorValue[rightEncoder];
-		y = SensorValue[leftEncoder];
-
-		motor[leftMotor] = 100;
-		motor[rightMotor] = 100;
-
-		if(x > y){
-			motor[leftMotor] = 127;
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 50;
 			motor[rightMotor] = 50;
 		}
 
-		if(y > x){
-			motor[leftMotor] = 50;
-			motor[rightMotor] = 127;
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 65;
+			motor[rightMotor] = 25;
 		}
 
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 25;
+			motor[rightMotor] = 65;
+		}
+
+		if(sensorLeftInt > 2000 && sensorMiddleInt > 2000){
+			wait1Msec(450);
+			motor[leftMotor] = motor[rightMotor] = 0;
+			placeholder++;
+		}
 	}
-
-	x = 0;
-	y = 0;
-	SensorValue[rightEncoder] = 0;
-	SensorValue[leftEncoder] = 0;
-
+	
 }
 
-void straightLine() {
+//++++++++++++++++++++++ Travel in a straight line until intersection right ++++++++++++++++++++
 
-	x = SensorValue[rightEncoder];
-	y = SensorValue[leftEncoder];
+void lineUIR() {
+	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
 
-	motor[leftMotor] = 100;
-	motor[rightMotor] = 100;
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 50;
+			motor[rightMotor] = 50;
+		}
 
-	if(x > y){
-		motor[leftMotor] = 127;
-		motor[rightMotor] = 50;
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 65;
+			motor[rightMotor] = 25;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 25;
+			motor[rightMotor] = 65;
+		}
+
+		if(sensorRightInt > 2000 && sensorMiddleInt > 2000){
+			wait1Msec(450);
+			motor[leftMotor] = motor[rightMotor] = 0;
+			placeholder++;
+		}
 	}
+	
+}
 
-	if(y > x){
+//+++++++++++++++++++++++++++++++++++++++ Turn right +++++++++++++++++++++++++++++++++++++++++
+
+void rightTurn() {
+	
+	while(placeholder == 0){
+	
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
 		motor[leftMotor] = 50;
-		motor[rightMotor] = 127;
-	}
+		motor[rightMotor] = -50;
 
-
-
-	x = 0;
-	y = 0;
-	SensorValue[rightEncoder] = 0;
-	SensorValue[leftEncoder] = 0;
-
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Right Angle Right Turn |+++++++++++++++++++++++++++++++++
-
-void rightAngleTurnRight() {
-	while(x > -492 && y < 492) {
-
-		motor[leftMotor] = 90;
-		motor[rightMotor] = -90;
-
-		x = SensorValue[rightEncoder];
-		y = SensorValue[leftEncoder];
-
-	}
-
-	x = 0;
-	y = 0;
-	SensorValue[rightEncoder] = 0;
-	SensorValue[leftEncoder] = 0;
-
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Right Angle Left Turn |+++++++++++++++++++++++++++++++++
-
-void rightAngleTurnLeft() {
-	while(x < 492 && y > -492) {
-
-		motor[leftMotor] = -90;
-		motor[rightMotor] = 90;
-
-		x = SensorValue[rightEncoder];
-		y = SensorValue[leftEncoder];
-
-	}
-
-	x = 0;
-	y = 0;
-	SensorValue[rightEncoder] = 0;
-	SensorValue[leftEncoder] = 0;
-
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Follow Line |+++++++++++++++++++++++++++++++++
-
-void followLine() {
-
-	while(sensorMiddle > 600) {
-
-		sensorLeft = SensorValue[sensorLeft];
-		sensorRight = SensorValue[sensorRight];
-		sensorMiddle = SensorValue[sensorMiddle];
-
-		motor[leftMotor] = 100;
-		motor[rightMotor] = 100;
-
-		if(sensorRight > 600){
-			motor[leftMotor] = 127;
-			motor[rightMotor] = 50;
+		if(sensorRightInt > 2000){
+			wait1Msec(100);
+			motor[leftMotor] = -80;
+			motor[rightMotor] = 80;
+			wait1Msec(45);
+			placeholder++;
 		}
-
-		if(sensorLeft > 600){
-			motor[leftMotor] = 50;
-			motor[rightMotor] = 127;
-		}
-		
 	}
-
+	
 }
 
-*/
+//+++++++++++++++++++++++++++++++++++++++ Turn left +++++++++++++++++++++++++++++++++++++++++
+
+void leftTurn() {
+	
+	while(placeholder == 0){
+	
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		motor[leftMotor] = -50;
+		motor[rightMotor] = 50;
+
+		if(sensorLeftInt > 2000){
+			wait1Msec(100);
+			motor[leftMotor] = 80;
+			motor[rightMotor] = -80;
+			wait1Msec(45);
+			placeholder++;
+		}
+	}
+	
+}
+
+//+++++++++++++++++++++++++++++++++++++++ Pause +++++++++++++++++++++++++++++++++++++++++
+
+void pauseReset(int seconds) {
+	motor[leftMotor] = motor[rightMotor] = 0;
+
+	wait1Msec(seconds * 1000);
+
+	sensorLeftInt = 0;
+	sensorRightInt = 0;
+	sensorMiddleInt = 0;
+
+	SensorValue[rightEncoder] = 0;
+	SensorValue[leftEncoder] = 0;
+	
+	encoderLeftInt = 0;
+	encoderRightInt = 0;
+	
+	placeholder = 0;
+}
+
+//+++++++++++++++++++++++++++++++++++++++ Object Check +++++++++++++++++++++++++++++++++++++++++
+
+void objectCheck() {
+	if(SensorValue[sonarInput] > 4 && SensorValue[sonarInput] < 15){
+		armAngleInt = SensorValue[armAngle];
+		while(armAngleInt > 325){
+			armAngleInt = SensorValue[armAngle];
+			motor[arm] = -70;
+		}
+	}
+}
 
 //+++++++++++++++++++++++++++++++++++++++++++++| Route 1 |+++++++++++++++++++++++++++++++++++++++++++++
 
