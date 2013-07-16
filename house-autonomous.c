@@ -23,29 +23,29 @@ int sensorMiddleInt = 0;
 //++++++++++++++++++++++ Travel in a straight line until intersection left ++++++++++++++++++++
 
 void lineUIL() {
-  
+	
 	while(placeholder == 0){
 		sensorLeftInt = SensorValue[sensorLeft];
 		sensorRightInt = SensorValue[sensorRight];
 		sensorMiddleInt = SensorValue[sensorMiddle];
 
 		if(sensorMiddleInt > 2000){
-			motor[leftMotor] = 50;
-			motor[rightMotor] = 50;
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 90;
 		}
 
 		if(sensorRightInt > 2000){
-			motor[leftMotor] = 65;
-			motor[rightMotor] = 25;
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
 		}
 
 		if(sensorLeftInt > 2000){
-			motor[leftMotor] = 25;
-			motor[rightMotor] = 65;
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
 		}
 
 		if(sensorLeftInt > 2000 && sensorMiddleInt > 2000){
-			wait1Msec(450);
+			wait1Msec(500);
 			motor[leftMotor] = motor[rightMotor] = 0;
 			placeholder++;
 		}
@@ -63,22 +63,22 @@ void lineUIR() {
 		sensorMiddleInt = SensorValue[sensorMiddle];
 
 		if(sensorMiddleInt > 2000){
-			motor[leftMotor] = 50;
-			motor[rightMotor] = 50;
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 90;
 		}
 
 		if(sensorRightInt > 2000){
-			motor[leftMotor] = 65;
-			motor[rightMotor] = 25;
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
 		}
 
 		if(sensorLeftInt > 2000){
-			motor[leftMotor] = 25;
-			motor[rightMotor] = 65;
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
 		}
 
 		if(sensorRightInt > 2000 && sensorMiddleInt > 2000){
-			wait1Msec(450);
+			wait1Msec(500);
 			motor[leftMotor] = motor[rightMotor] = 0;
 			placeholder++;
 		}
@@ -170,23 +170,17 @@ void objectCheck() {
 
 task main() {
 	
-	lineUIL();
-	
-	pauseReset(1);
-	
-	leftTurn();
-	
-	pauseReset(1);
-	
-	lineUIL();
-	
-	pauseReset(1);
-	
-	leftTurn();
+	lineUIR();
 	
 	pauseReset(1);
 	
 	lineUIR();
+	
+	pauseReset(1);
+	
+	lineUIR();
+	
+	pauseReset(1);
 	
 	rightTurn();
 	
