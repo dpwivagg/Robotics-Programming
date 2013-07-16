@@ -20,6 +20,54 @@ int sensorLeftInt = 0;
 int sensorRightInt = 0;
 int sensorMiddleInt = 0;
 
+//++++++++++++++++++++++++++++++++++++++++++ U-Turn Left +++++++++++++++++++++++++++++++++++++++++++
+
+void uturnLeft() {
+	
+	while(placeholder == 0){
+	
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		motor[leftMotor] = -50;
+		motor[rightMotor] = 50;
+
+		if(sensorLeftInt > 2000){
+			wait1Msec(100);
+			motor[leftMotor] = 80;
+			motor[rightMotor] = -80;
+			wait1Msec(45);
+			placeholder++;
+		}
+	}
+	
+}
+
+//++++++++++++++++++++++++++++++++++++++++++ U-Turn Right +++++++++++++++++++++++++++++++++++++++++++
+
+void uturnRight() {
+	
+	while(placeholder == 0){
+	
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		motor[leftMotor] = 50;
+		motor[rightMotor] = -50;
+
+		if(sensorRightInt > 2000){
+			wait1Msec(100);
+			motor[leftMotor] = -80;
+			motor[rightMotor] = 80;
+			wait1Msec(45);
+			placeholder++;
+		}
+	}
+	
+}
+
 //++++++++++++++++++++++ Travel in a straight line until intersection left ++++++++++++++++++++
 
 void lineUIL() {
@@ -31,7 +79,7 @@ void lineUIL() {
 
 		if(sensorMiddleInt > 2000){
 			motor[leftMotor] = 90;
-			motor[rightMotor] = 90;
+			motor[rightMotor] = 82;
 		}
 
 		if(sensorRightInt > 2000){
@@ -64,7 +112,7 @@ void lineUIR() {
 
 		if(sensorMiddleInt > 2000){
 			motor[leftMotor] = 90;
-			motor[rightMotor] = 90;
+			motor[rightMotor] = 82;
 		}
 
 		if(sensorRightInt > 2000){
@@ -183,11 +231,56 @@ void route1() {
 	
 	pauseReset(1);
 	
+	motor[leftMotor] = motor[rightMotor] = -50;
+	
+	wait1Msec(150);
+	
+	pauseReset(1);
+	
 	rightTurn();
 	
 	pauseReset(1);
 	
-	objectCheck();
+	uturnRight();
+	
+	pauseReset(1);
+	
+	lineUIL();
+	
+	pauseReset(1);
+	
+	leftTurn();
+	
+	pauseReset(1);
+	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 82;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
+		}
+		
+		if(encoderRightInt > 75 || encoderLeftInt > 75) {
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+			placeholder++;
+			
+		}
+
+	}
 
 }
 
@@ -200,6 +293,12 @@ void route2() {
 	pauseReset(1);
 	
 	leftTurn();
+	
+	pauseReset(1);
+	
+	motor[rightMotor] = 40;
+	
+	wait1Msec(150);
 	
 	pauseReset(1);
 	
@@ -217,7 +316,57 @@ void route2() {
 	
 	pauseReset(1);
 	
-	objectCheck();
+	uturnRight();
+	
+	pauseReset(1);
+	
+	lineUIL();
+	
+	pauseReset(1);
+	
+	leftTurn();
+	
+	pauseReset(1);
+	
+	lineUIR();
+	
+	pauseReset(1);
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	lineUIR();
+	
+	pauseReset(1);
+	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 82;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
+		}
+		if(encoderRightInt > 125 || encoderLeftInt > 125) {
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+			placeholder++;
+			
+		}
+
+	}
 
 }
 
@@ -249,15 +398,21 @@ void route3() {
 	
 	pauseReset(1);
 	
-	objectCheck();
-
-}
-
-//+++++++++++++++++++++++++++++++++++++++++++++| Route 4 |+++++++++++++++++++++++++++++++++++++++++++++
-
-void route4() {
+	motor[leftMotor] = motor[rightMotor] = -60;
 	
-	lineUIR();
+	wait1Msec(450);
+	
+	pauseReset(1);
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	lineUIL();
+	
+	pauseReset(1);
+	
+	leftTurn();
 	
 	pauseReset(1);
 	
@@ -271,9 +426,125 @@ void route4() {
 	
 	rightTurn();
 	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 82;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
+		}
+		
+		if(encoderRightInt > 125 || encoderLeftInt > 125) {
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+			placeholder++;
+			
+		}
+
+	}
+
+}
+
+//+++++++++++++++++++++++++++++++++++++++++++++| Route 4 |+++++++++++++++++++++++++++++++++++++++++++++
+
+void route4() {
+	
+	lineUIR();
+	
+	pauseReset(1);
+	/*
+	if(SensorValue[sensorRight] < 2000 && SensorValue[sensorLeft] < 2000 && SensorValue[sensorMiddle] < 2000) {
+		
+		motor[leftMotor] = -50;
+		motor[rightMotor] = 50;
+		
+		if(SensorValue[sensorLeft] > 2000) {
+			
+			motor[leftMotor] = 80;
+			motor[rightMotor] = -80;
+			wait1Msec(45);
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+		}
+		
+	}
+	
+	pauseReset(1);
+	*/
+	lineUIR();
+	
 	pauseReset(1);
 	
-	objectCheck();
+	lineUIR();
+	
+	pauseReset(1);
+	
+	if(SensorValue[sensorRight] > 2000) {
+		
+		motor[leftMotor] = 50;
+		motor[rightMotor] = -50;
+		
+		if(SensorValue[sensorMiddle] > 2000) {
+			
+			motor[leftMotor] = -80;
+			motor[rightMotor] = 80;
+			wait1Msec(45);
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+		}
+		
+	}
+	
+	pauseReset(1);
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	uturnRight();
+	
+	pauseReset(1);
+	
+	while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 82;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
+		}
+		
+		if(encoderRightInt > 175 || encoderLeftInt > 175) {
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+			placeholder++;
+			
+		}
+
+	}
 
 }
 
@@ -281,7 +552,25 @@ void route4() {
 
 void route5() {
 	
-lineUIR();
+	lineUIR();
+	
+	pauseReset(1);
+	
+	if(SensorValue[sensorRight] > 2000) {
+		
+		motor[leftMotor] = 50;
+		motor[rightMotor] = -50;
+		
+		if(SensorValue[sensorMiddle] > 2000) {
+			
+			motor[leftMotor] = -80;
+			motor[rightMotor] = 80;
+			wait1Msec(45);
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+		}
+		
+	}
 	
 	pauseReset(1);
 	
@@ -305,7 +594,42 @@ lineUIR();
 	
 	pauseReset(1);
 	
-	objectCheck();
+	leftTurn();
+	
+	pauseReset(1);
+	
+	lineUIL();
+	
+	pauseReset(1);
+	
+		while(placeholder == 0){
+		sensorLeftInt = SensorValue[sensorLeft];
+		sensorRightInt = SensorValue[sensorRight];
+		sensorMiddleInt = SensorValue[sensorMiddle];
+
+		if(sensorMiddleInt > 2000){
+			motor[leftMotor] = 90;
+			motor[rightMotor] = 82;
+		}
+
+		if(sensorRightInt > 2000){
+			motor[leftMotor] = 100;
+			motor[rightMotor] = 60;
+		}
+
+		if(sensorLeftInt > 2000){
+			motor[leftMotor] = 60;
+			motor[rightMotor] = 100;
+		}
+		
+		if(encoderRightInt > 200 || encoderLeftInt > 200) {
+			motor[leftMotor] = motor[rightMotor] = 0;
+			
+			placeholder++;
+			
+		}
+
+	}
 
 }
 
