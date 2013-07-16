@@ -169,12 +169,54 @@ void objectCheck() {
 //+++++++++++++++++++++++++++++++++++++++++++++| Route 1 |+++++++++++++++++++++++++++++++++++++++++++++
 
 void route1() {
+	
+	lineUIR();
+	
+	pauseReset(1);
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	lineUIR();
+	
+	pauseReset(1);
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	objectCheck();
 
 }
 
 //+++++++++++++++++++++++++++++++++++++++++++++| Route 2 |+++++++++++++++++++++++++++++++++++++++++++++
 
 void route2() {
+
+	lineUIL();
+	
+	pauseReset(1);
+	
+	leftTurn();
+	
+	pauseReset(1);
+	
+	lineUIL();
+	
+	pauseReset(1);
+	
+	leftTurn();
+	
+	pauseReset(1);
+	
+	lineUIR();
+	
+	rightTurn();
+	
+	pauseReset(1);
+	
+	objectCheck();
 
 }
 
